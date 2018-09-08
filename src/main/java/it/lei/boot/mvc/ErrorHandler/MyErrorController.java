@@ -1,4 +1,4 @@
-package it.lei.boot.ErrorHandler;
+package it.lei.boot.mvc.ErrorHandler;
 
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;

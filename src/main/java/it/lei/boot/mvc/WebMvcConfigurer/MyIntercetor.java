@@ -1,4 +1,4 @@
-package it.lei.boot.WebMvcConfigurer;
+package it.lei.boot.mvc.WebMvcConfigurer;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

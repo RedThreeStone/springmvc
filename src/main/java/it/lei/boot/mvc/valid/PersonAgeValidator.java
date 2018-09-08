@@ -1,4 +1,4 @@
-package it.lei.boot.valid;
+package it.lei.boot.mvc.valid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

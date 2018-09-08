@@ -1,4 +1,4 @@
-package it.lei.boot.ErrorHandler;
+package it.lei.boot.mvc.ErrorHandler;
 
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.ui.Model;

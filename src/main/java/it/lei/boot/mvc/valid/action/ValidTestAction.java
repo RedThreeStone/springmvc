@@ -1,7 +1,7 @@
-package it.lei.boot.valid.action;
+package it.lei.boot.mvc.valid.action;
 
-import it.lei.boot.valid.NormalValid;
-import it.lei.boot.valid.domain.ValidUser;
+import it.lei.boot.mvc.valid.NormalValid;
+import it.lei.boot.mvc.valid.domain.ValidUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;

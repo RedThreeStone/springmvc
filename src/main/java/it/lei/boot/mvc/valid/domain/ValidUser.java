@@ -1,7 +1,7 @@
-package it.lei.boot.valid.domain;
+package it.lei.boot.mvc.valid.domain;
 
-import it.lei.boot.valid.NormalValid;
-import it.lei.boot.valid.PersonAge;
+import it.lei.boot.mvc.valid.NormalValid;
+import it.lei.boot.mvc.valid.PersonAge;
 
 import java.util.Date;
 

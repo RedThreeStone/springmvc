@@ -1,4 +1,4 @@
-package it.lei.boot.WebMvcConfigurer;
+package it.lei.boot.mvc.WebMvcConfigurer;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
