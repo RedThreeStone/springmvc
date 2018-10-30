@@ -19,4 +19,9 @@ public class ValidTestAction  {
         }
         return "1111";
     }
+    @RequestMapping("/viewSource")
+    @ResponseBody
+    public String viewSource(){
+        return "111";
+    }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ErrorAction {
     @RequestMapping("/errorTestJson")
     public @ResponseBody Model errorTestJson(Model model){
-        int a=5/0;
+        model.addAttribute("message","hello");
         return model;
     }
     @RequestMapping("/errorTestHtml")
