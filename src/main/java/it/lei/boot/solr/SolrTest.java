@@ -1,6 +1,7 @@
 package it.lei.boot.solr;
 
 import it.lei.boot.BaseTest;
+import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -74,6 +76,76 @@ public class SolrTest extends BaseTest {
                 }
             }
         }
+    }
+    @Test
+    public  void  jdSearchTest() throws IOException, SolrServerException {
+        String keyWords="黄";
+        int currentPage=0;
+        int pageSize=20;
+        //分类
+        String filter1="15";
+        //价格区间
+        String filter2="10-80";
+        //按照价格排序
+        boolean ascPrice=true;
+        //关键词及默认域设置
+        SolrQuery solrQuery = new SolrQuery();
+        solrQuery.setQuery(keyWords);
+        solrQuery.set("df","product_keywords");
+        //当前页及每页的大小
+        solrQuery.setStart(currentPage);
+        solrQuery.setRows(pageSize);
+        //过滤条件
+        solrQuery.addFilterQuery("product_catalog:"+filter1);
+        String[] split = StringUtils.split(filter2, "-");
+        solrQuery.addFilterQuery("product_catalog_price:["+Double.parseDouble(split[0])+"TO" +Double.parseDouble(split[1])+"]");
 
+        //排序
+        if(ascPrice){
+            solrQuery.setSort("product_catalog_price", SolrQuery.ORDER.asc);
+        }else {
+            solrQuery.setSort("product_catalog_price", SolrQuery.ORDER.desc);
+        }
+
+        //显示字段
+        solrQuery.set("fl","id,product_keywords,product_catalog_price,product_picture,product_name");
+
+        //高亮
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("product_name");
+        solrQuery.setHighlightSimplePre("<font style = 'color:red'>");
+        solrQuery.setHighlightSimplePre("</font");
+        //执行查询
+        QueryResponse queryResponse = solrClient.query(solrQuery);
+        SolrDocumentList results = queryResponse.getResults();
+
+        long numFound = results.getNumFound();
+        ResultModel resultModel = new ResultModel();
+        //总数目
+        resultModel.setTotalNum((int) numFound);
+        //总页数
+        int pageTotal= (int) (numFound/pageSize);
+        if(numFound%pageSize>0){
+            pageTotal++;
+        }
+        resultModel.setPageTotal(pageTotal);
+        //内容
+        ArrayList<Product> products = new ArrayList<>();
+        Map<String, Map<String, List<String>>> highlighting = queryResponse.getHighlighting();
+        for(SolrDocument solrDocument :results){
+            Product product = new Product();
+            product.setPid((Integer) solrDocument.get("id"));
+            product.setKeywords((String) solrDocument.get("product_keywords"));
+            product.setPicturePath((String) solrDocument.get("product_picture"));
+            product.setPrice((Double) solrDocument.get("product_catalog_price"));
+            //如果高亮就给高亮的产品名,不然就给普通的
+            Map<String, List<String>> idMap = highlighting.get(solrDocument.get("id"));
+            if(idMap.size()>0){
+                product.setName((String) solrDocument.get("product_name"));
+            }else {
+                product.setName(idMap.get("product_name").get(0));
+            }
+            products.add(product);
+        }
     }
 }
